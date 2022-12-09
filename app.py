@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+
 #Tema do GUI
 sg.theme('Dark2')
 
@@ -12,8 +13,7 @@ Excel_file = 'Banco_de_dados_praticas.xlsx'
 df = pd.read_excel(Excel_file)
 
 
-
-            #Criando as telas do sistema
+#Criando as telas do sistema
 #Tela inicial
 def janela_principal():
     
@@ -65,16 +65,17 @@ def janela_Pesquisa():
     ]
     
     ColunaInput = [
-        [sg.Input(font='arial 12 ', key='Nome', size=(35, 1))],
+        [sg.Input(font='arial 12 ', key='Nome', do_not_clear=True, size=(35, 1))],
         [sg.Input(font='arial 12 ', key='Idade', size=(3, 1))],
-        [sg.InputCombo(('Masculino', 'Feminino'),key='Sexo', size=(20, 1))],
-        [sg.InputCombo(('Outros', 'Prefiro não dizer'),key='Genero', size=(20, 1))],
+        [sg.InputCombo(('Masculino', 'Feminino', 'Prefiro não dizer'),key='Sexo', size=(20, 1))],
+        [sg.InputCombo(('Transgênero', 'Cisgênero', 'Não-binário', 'Agênero', 'Outros', 'Prefiro não dizer'),key='Gênero', size=(20, 1))],
         [sg.Input('', key='outros')]
     ]
     
     TituloCheckbox = [
         [sg.Text('Já sofreu algum tipo de violação de direitos humanos?', font=("Helvetica", 15), pad=(0, 0))],
-        [sg.Text('Marque quais já sofreu', font=('Helvetica', 15), pad=(0, 0))]
+        [sg.Text('Se sim - Marque quais já sofreu', font=('Helvetica', 15), pad=(0, 0))],
+        [sg.Text('Se não - Desconsidere', font=('Helvetica', 15), pad=(0, 0))]
     ]
     
     Checkbox = [
@@ -103,14 +104,14 @@ def janela_Pesquisa():
         [sg.Column(Botoes, justification='center')]
     ]
     
-    return sg.Window('Pesquisa', element_padding=(0, 10), layout=layout, size=(600, 750), finalize=True) 
+    return sg.Window('Pesquisa', element_padding=(0, 10), layout=layout, size=(600, 800), finalize=True) 
 
 #tela de dados de quem responde
 def Janela_Usuario():
  
     usuario = [
-        [sg.Text('Informe o Usuario', font='arial 12', pad=(0, 0))],
-        [sg.Input(size=(20, 0), font='arial 12', pad=(0, 0), key='cep')]
+        [sg.Text('Informe o id do Usuario', font='arial 12', pad=(0, 0))],
+        [sg.Input(size=(20, 0), font='arial 12', pad=(0, 0), key='Id')]
     ]
     
     coluna1 = [
@@ -122,17 +123,17 @@ def Janela_Usuario():
     ]
     
     coluna2 = [
-        [sg.Input(font='arial 12 bold', key='Nome', size=(35, 1))],
+        [sg.Input(font='arial 12 bold', key='Nome_Consulta', size=(35, 1))],
         [sg.Input(font='arial 12 bold', key='Idade', size=(35, 1))],
         [sg.Input(font='arial 12 bold', key='genero', size=(35, 1))],
-        [sg.Input(font='arial 12 bold', key='orientação sexual', size=(35, 1))],
+        [sg.Input(font='arial 12 bold', key='orientação_sexual', size=(35, 1))],
         [sg.Input(font='arial 12 bold', key='outros', size=(35, 1))],
     ]
     
     botoes = [
-        [sg.Button('Consultar', font='arial 12', size=(10, 1), pad=((0, 15), 0)),
+        [sg.Button('Consultar',key='Consulta', font='arial 12', size=(10, 1), pad=((0, 15), 0)),
          sg.Button('Voltar', font='arial 12', size=(8, 1), pad=((0, 15), 0)),
-        sg.Button('Sair', font='arial 12', size=(8, 1))]
+        sg.Button('Sair', font='arial 12', size=(8, 1), pad=((0, 15), 0))],
     ]
     
     layout = [
@@ -143,9 +144,12 @@ def Janela_Usuario():
         [sg.Column(botoes, justification='center')]
     ]
     
+    
     return sg.Window('ConsultaUsuario', element_padding=(0, 10), layout=layout, size=(600, 500), finalize=True)
     
 #Tela de dados individuais
+
+
 #Telas de estatistica
 def janela_graficos():
     
@@ -166,7 +170,7 @@ def janela_graficos():
         [sg.Button('ir para', font='arial 12',  key='TabelaPesquisas')],
         [sg.Button('ir para', font='arial 12', key='GraficoNome')],
         [sg.Button('ir para', font='arial 12', key='Graficoidade')],
-        [sg.Button('ir para', font='arial 12', key='GrafcioSexo')],
+        [sg.Button('ir para', font='arial 12', key='GraficioSexo')],
         [sg.Button('ir para', font='arial 12', key='GraficoGenero')],
         [sg.Button('ir para', font='arial 12', key='GraficoDireito')],
         
@@ -186,20 +190,7 @@ def janela_graficos():
     return sg.Window('Inicio', element_padding=(0, 10), layout=layout, size=(600, 500), finalize=True) 
 
 #Grafico para idade/Nome
-Banco = df.to_numpy()
-emOrdem = Banco.transpose()
-sorted_Banco = emOrdem[:, np.argsort(emOrdem[1])]
-
-x = np.array(sorted_Banco[1])
-y = np.array(sorted_Banco[0])
-
-plt.plot(x, y, color='green', marker='o')
-plt.xlabel('idade')
-plt.ylabel('Nome')
-    
 #Grafico dos direitos
-
-
 #tela de fim
 
 
@@ -219,6 +210,8 @@ while True:
     #Quando a janela for fechada ou clicar para sair
     if evento in (sg.WIN_CLOSED, 'Sair'):
         break
+
+
     
     #Quando for para a pagina de pesquisa
     if Janela == PaginaPrincipal and evento == 'InicioPesquisa':
@@ -246,14 +239,20 @@ while True:
         PaginaPrincipal.hide()
         SegundaPagina = janela_graficos()
         
+
     #Ver Nomes/Idades
-    if evento == 'TabelaPesquisas':
-        df_Nome = plt.show()
-    
+
     #Ver Idades
     if evento == 'Graficoidade':
-        sorted_Banco = plt.show()
+        Grafico_Idade = plt.show()
+        
+    elif evento == 'GraficioSexo':
+        Grafico_Sexo = plt.show()
     
+    elif evento == 'GraficoGenero':
+        Grafico_Genero = plt.show()
+        
+
     #Quando quiser enviar formulario
     if evento == 'Limpar':
         Limpar_janela()
@@ -263,4 +262,5 @@ while True:
         df.to_excel(Excel_file, index=False)
         sg.popup('Usuário salvo do Banco de dados!')
         Limpar_janela()
-    
+        
+        
