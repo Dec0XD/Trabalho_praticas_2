@@ -2,7 +2,16 @@ import PySimpleGUI as sg
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-
+from tabela import *
+from Checar_usuario import*
+from Grafico_Total_Violaçoes import *
+from Grafico_18_porcento import *
+from Grafico_Total_18 import *
+from Grafico_Idade import *
+from Grafico_Sexo import*
+from Grafico_Genero import*
+from Grafico_Total_Genero import *
+from Graficos_Gerais import *
 
 
 #Tema do GUI
@@ -158,21 +167,23 @@ def janela_graficos():
     ]
     
     ColunaOpçoes = [
-        [sg.Text('Respostas das pesquisas', font='arial 12')],
-        [sg.Text('Nome dos respondentes', font='arial 12')],
-        [sg.Text('Idade dos respondentes', font='arial 12')],
-        [sg.Text('Sexo dos respondentes', font='arial 12')],
-        [sg.Text('Gênero dos respondentes', font='arial 12')],
-        [sg.Text('Direitos Violados dos respondentes', font='arial 12')],
+        [sg.Text('Respostas das pesquisas', font='arial 12',pad=(0, 8))],
+        [sg.Text('Geral por violação', font='arial 12',pad=(0, 8))],
+        [sg.Text('Idade dos respondentes', font='arial 12',pad=(0, 8))],
+        [sg.Text('Sexo dos respondentes', font='arial 12',pad=(0, 8))],
+        [sg.Text('Gênero dos respondentes', font='arial 12',pad=(0, 8))],
+        [sg.Text('Direitos Violados por idade', font='arial 12',pad=(0, 8))],
+        [sg.Text('Direitos Violados por sexo', font='arial 12',pad=(0, 8))],
     ]
         
     ColunaBotoes = [
-        [sg.Button('ir para', font='arial 12',  key='TabelaPesquisas')],
-        [sg.Button('ir para', font='arial 12', key='GraficoNome')],
-        [sg.Button('ir para', font='arial 12', key='Graficoidade')],
-        [sg.Button('ir para', font='arial 12', key='GraficioSexo')],
-        [sg.Button('ir para', font='arial 12', key='GraficoGenero')],
-        [sg.Button('ir para', font='arial 12', key='GraficoDireito')],
+        [sg.Button('ir para', font='arial 12',  key='TabelaPesquisas',pad=(0, 5))],
+        [sg.Button('ir para', font='arial 12', key='GraficoGeral',pad=(0, 5))],
+        [sg.Button('ir para', font='arial 12', key='Graficoidade',pad=(0, 5))],
+        [sg.Button('ir para', font='arial 12', key='GraficioSexo',pad=(0, 5))],
+        [sg.Button('ir para', font='arial 12', key='GraficoGenero',pad=(0, 5))],
+        [sg.Button('ir para', font='arial 12', key='GraficoDireitosIdade',pad=(0, 5))],
+        [sg.Button('ir para', font='arial 12', key='GraficoDireitosgenero',pad=(0, 5))],
         
     ]
     
@@ -210,9 +221,13 @@ while True:
     #Quando a janela for fechada ou clicar para sair
     if evento in (sg.WIN_CLOSED, 'Sair'):
         break
-
-
     
+    #Quando quiser voltar para a anterior
+    if Janela == SegundaPagina and evento == 'Voltar':
+        SegundaPagina.hide()
+        PaginaPrincipal.un_hide()
+        
+
     #Quando for para a pagina de pesquisa
     if Janela == PaginaPrincipal and evento == 'InicioPesquisa':
         PaginaPrincipal.hide()
@@ -221,37 +236,40 @@ while True:
     #Quando for para a pagina de Dados gerais
     if Janela == PaginaPrincipal and evento == 'InicioDados':
         PaginaPrincipal.hide()
-        SegundaPagina = ()
+        SegundaPagina = tabela_geral()
         
     #Quando for para a pagina de usuarios
     if Janela == PaginaPrincipal and evento == 'InicioDadosIndividuais':
         PaginaPrincipal.hide()
-        SegundaPagina = Janela_Usuario()
-        
-        
-    #Quando quiser voltar para a anterior
-    if Janela == SegundaPagina and evento == 'Voltar':
-        SegundaPagina.hide()
-        PaginaPrincipal.un_hide()
+        SegundaPagina = Checar_usuario()
+       
         
     #Quando abrir as estatisticas
     if Janela == PaginaPrincipal and evento == 'InicioEstatisticas':
         PaginaPrincipal.hide()
         SegundaPagina = janela_graficos()
-        
-
-    #Ver Nomes/Idades
-
+    #Ver Total das pesquisas
+    if evento == 'TabelaPesquisas':
+        SegundaPagina == total_pesquisa()
+    elif evento == 'GraficoGeral':
+        grafico_geral = grafico_geral()
     #Ver Idades
-    if evento == 'Graficoidade':
-        Grafico_Idade = plt.show()
-        
+    elif evento == 'Graficoidade':
+        SegundaPagina = idade()
+    #Ver Sexos
     elif evento == 'GraficioSexo':
-        Grafico_Sexo = plt.show()
-    
+        Grafico_Sexo = sexo_usuarios()
+    #Ver Generos
     elif evento == 'GraficoGenero':
-        Grafico_Genero = plt.show()
-        
+        Grafico_Genero = genero_usuarios()
+    #direitos violados por idade
+    elif evento == 'GraficoDireitosIdade':
+        Grafico_total_Idade = total_idade()
+        grafico_porcentagem_18 = grafico_porcentagem_18()
+    #direitos violados por genero
+    elif evento == 'GraficoDireitosgenero':
+        Grafico_total_Genero = total_genero()
+  
 
     #Quando quiser enviar formulario
     if evento == 'Limpar':
@@ -262,5 +280,3 @@ while True:
         df.to_excel(Excel_file, index=False)
         sg.popup('Usuário salvo do Banco de dados!')
         Limpar_janela()
-        
-        

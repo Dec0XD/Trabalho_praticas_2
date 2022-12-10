@@ -3,15 +3,16 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
+def sexo_usuarios():
+    Excel_file = pd.read_excel('Banco_de_dados_praticas.xlsx')
+    print(Excel_file)
 
-Excel_file = pd.read_excel('Banco_de_dados_praticas.xlsx')
-print(Excel_file)
+    Contagem = Excel_file.groupby(['Sexo']).size()
+    print(Contagem)
 
-Contagem = Excel_file.groupby(['Sexo']).size()
-print(Contagem)
-
-plt.hist(Excel_file['Sexo'])
-plt.title('Quantidade de Homens e Mulheres que responderam a pesquisa')
-plt.xlabel('Masculino X Feminino')
-plt.ylabel('Quantidade')
-plt.show()
+    plt.hist(Excel_file['Sexo'])
+    plt.title('Quantidade de Homens e Mulheres que responderam a pesquisa')
+    plt.xlabel('Masculino X Feminino')
+    plt.ylabel('Quantidade')
+    plt.show()
+    

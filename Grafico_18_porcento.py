@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-def total_idade():
+def grafico_porcentagem_18():
     #banco de dados
     Excel_file = pd.read_excel('Banco_de_dados_praticas.xlsx')
 
@@ -28,7 +28,7 @@ def total_idade():
     #Contagem Para cada Direto ferido
     #Direito a vida (Maior)retido
     ContagemDireitoVida_Maior = dadoMaior.groupby(['DireitoVida']).size()
-    #print(ContagemDireitoVida_Maior)
+    print(ContagemDireitoVida_Maior)
     #Direito a vida (Menor) retido
     ContagemDireitoVida_Menor = dadoMenor.groupby(['DireitoVida']).size()
     #print(ContagemDireitoVida_Menor)
@@ -63,56 +63,50 @@ def total_idade():
 
     #Contagem Repressão Maior
     ContagemRepressão_Maior = dadoMaior.groupby(['Repressão']).size()
-    print(ContagemRepressão_Maior)
+    #print(ContagemRepressão_Maior)
     #Contagem Repressão Menor
     ContagemRepressão_Menor = dadoMenor.groupby(['Repressão']).size()
-    print(ContagemRepressão_Menor)
+    #print(ContagemRepressão_Menor)
 
     #Contagem Liberdade de Expressão Maior
     ConatgemLiberdadeExpressão_Maior = dadoMaior.groupby(['LiberdadeExpressão']).size()
-    print(ConatgemLiberdadeExpressão_Maior)
+    #print(ConatgemLiberdadeExpressão_Maior)
     #Contagem Liberdade de Expressão Menor
     ContagemLiberdadeExpressão_Menor = dadoMenor.groupby(['LiberdadeExpressão']).size()
-    print(ContagemLiberdade_Menor)
-
-    #Tamanho das barras
-    TamanhoBarra = 0.1
-
-    #Separando grafico em colunas
-    r1 = np.arange(len(ContagemMaior))
-    r2 = [x + TamanhoBarra for x in r1]
-    r3 = [x + TamanhoBarra for x in r2]
-    r4 = [x + TamanhoBarra for x in r3]
-    r5 = [x + TamanhoBarra for x in r4]
-    r6 = [x + TamanhoBarra for x in r5]
-    r7 = [x + TamanhoBarra for x in r6]
-
+    #print(ContagemLiberdade_Menor)
 
     #Plotando o grafico
 
-    plt.subplot(2,1,1)
-    plt.bar(r1, ContagemDireitoVida_Maior, width=TamanhoBarra, label='Direito a vida')
-    plt.bar(r2, ContagemViolencia_Maior,width=TamanhoBarra, color='red', label='Violência')
-    plt.bar(r3, ContagemEscravidao_Maior,width=TamanhoBarra, color='orange', label='Escravidão')
-    plt.bar(r4, ContagemMausTratos_Maior, width=TamanhoBarra, color='pink', label='Maus Tratos')
-    plt.bar(r5, ContagemLiberdade_Maior, width=TamanhoBarra, color='violet', label='Libedade')
-    plt.bar(r6, ContagemRepressão_Maior, width=TamanhoBarra, color='black', label='Repressão')
-    plt.bar(r7, ConatgemLiberdadeExpressão_Maior, width=TamanhoBarra, color='green', label='Liberdade de expressão')
-    plt.xticks([r + TamanhoBarra for r in range(len(ContagemMaior))], ['Não Sofreram','Sofreram',])
+    plt.subplot(3,3,1)
+    plt.pie(ContagemDireitoVida_Maior, labels=ContagemDireitoVida_Maior, autopct='%1.0f%%')
     plt.legend()
 
-    plt.title('Pessoas Maiores de 18 x Menores de 18')
-
-    plt.subplot(2,1,2)
-    plt.bar(r1, ContagemDireitoVida_Menor, width=TamanhoBarra, label='Direito a vida')
-    plt.bar(r2, ContagemViolencia_Menor,width=TamanhoBarra, color='red', label='Violência')
-    plt.bar(r3, ContagemEscravidao_Menor,width=TamanhoBarra, color='orange', label='Escravidão')
-    plt.bar(r4, ContagemMausTratos_Menor, width=TamanhoBarra, color='pink', label='Maus Tratos')
-    plt.bar(r5, ContagemLiberdade_Menor, width=TamanhoBarra, color='violet', label='Libedade')
-    plt.bar(r6, ContagemRepressão_Menor, width=TamanhoBarra, color='black', label='Repressão')
-    plt.bar(r7, ContagemLiberdadeExpressão_Menor, width=TamanhoBarra, color='green', label='Liberdade de expressão')
-    plt.xticks([r + TamanhoBarra for r in range(len(ContagemMaior))], ['Não Sofreram','Sofreram',])
+    plt.subplot(3,3,2)
+    plt.pie(ContagemViolencia_Maior, labels=ContagemViolencia_Maior, autopct='%1.0f%%')
     plt.legend()
 
+    plt.subplot(3,3,3)
+    plt.pie(ContagemEscravidao_Maior, labels=ContagemEscravidao_Maior, autopct='%1.0f%%')
+    plt.legend()
+
+    plt.subplot(3,3,4)
+    plt.pie(ContagemMausTratos_Maior, labels=ContagemMausTratos_Maior, autopct='%1.0f%%')
+    plt.legend()
+
+    plt.subplot(3,3,5)
+    plt.pie(ContagemLiberdade_Maior, labels=ContagemLiberdade_Maior, autopct='%1.0f%%')
+    plt.legend()
+
+    plt.subplot(3,3,6)
+    plt.pie(ContagemLiberdade_Maior, labels=ContagemLiberdade_Maior, autopct='%1.0f%%')
+    plt.legend()
+
+    plt.subplot(3,3,7)
+    plt.pie(ContagemRepressão_Maior, labels=ContagemRepressão_Maior, autopct='%1.0f%%')
+    plt.legend()
+
+    plt.subplot(3,3,8)
+    plt.pie(ConatgemLiberdadeExpressão_Maior, labels=ConatgemLiberdadeExpressão_Maior, autopct='%1.0f%%')
+    plt.legend()
 
     plt.show()
