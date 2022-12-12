@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import seaborn as sns
 
 def genero_usuarios():
     Excel_file = pd.read_excel('Banco_de_dados_praticas.xlsx')
