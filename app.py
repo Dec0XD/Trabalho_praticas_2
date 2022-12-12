@@ -21,7 +21,6 @@ sg.theme('Dark2')
 Excel_file = 'Banco_de_dados_praticas.xlsx'
 df = pd.read_excel(Excel_file)
 
-
 #Criando as telas do sistema
 #Tela inicial
 def janela_principal():
@@ -188,8 +187,8 @@ def janela_graficos():
     ]
     
     Botoes = [
-        [sg.Button(' SAIR DO SISTEMA ', font='arial 12', key='Sair', pad=((0, 15), 0)),
-        sg.Button('Voltar', font='arial 12', size=(8, 1), pad=((0, 15), 0)),]
+        [sg.Button('Voltar', font='arial 12', size=(8, 1), pad=((0, 15), 0)),
+        sg.Button('Sair', font='arial 12', size=(8, 1), pad=((0, 15), 0))],
     ]
     
     layout = [
@@ -222,12 +221,22 @@ while True:
     if evento in (sg.WIN_CLOSED, 'Sair'):
         break
     
+        #Quando quiser limpar o formulario
+    if evento == 'Limpar':
+        Limpar_janela()
+        
+    #envio de formulario para o banco de dados
+    if evento == 'Enviar':
+        df = df.append(Dados, ignore_index=True)
+        df.to_excel(Excel_file, index=False)
+        sg.popup('Usuário salvo do Banco de dados!')
+        Limpar_janela()
+    
     #Quando quiser voltar para a anterior
     if Janela == SegundaPagina and evento == 'Voltar':
         SegundaPagina.hide()
         PaginaPrincipal.un_hide()
         
-
     #Quando for para a pagina de pesquisa
     if Janela == PaginaPrincipal and evento == 'InicioPesquisa':
         PaginaPrincipal.hide()
@@ -235,48 +244,36 @@ while True:
     
     #Quando for para a pagina de Dados gerais
     if Janela == PaginaPrincipal and evento == 'InicioDados':
-        PaginaPrincipal.hide()
         SegundaPagina = tabela_geral()
         
     #Quando for para a pagina de usuarios
     if Janela == PaginaPrincipal and evento == 'InicioDadosIndividuais':
-        PaginaPrincipal.hide()
         SegundaPagina = Checar_usuario()
        
-        
     #Quando abrir as estatisticas
     if Janela == PaginaPrincipal and evento == 'InicioEstatisticas':
         PaginaPrincipal.hide()
-        SegundaPagina = janela_graficos()
+        SegundaPagina = janela_graficos()     
+    
+    #Graficos
     #Ver Total das pesquisas
     if evento == 'TabelaPesquisas':
         SegundaPagina == total_pesquisa()
     elif evento == 'GraficoGeral':
-        grafico_geral = grafico_geral()
+        SegundaPagina = grafico_geral()
     #Ver Idades
     elif evento == 'Graficoidade':
         SegundaPagina = idade()
     #Ver Sexos
     elif evento == 'GraficioSexo':
-        Grafico_Sexo = sexo_usuarios()
+        SegundaPagina = sexo_usuarios()
     #Ver Generos
     elif evento == 'GraficoGenero':
-        Grafico_Genero = genero_usuarios()
+        SegundaPagina = genero_usuarios()
     #direitos violados por idade
     elif evento == 'GraficoDireitosIdade':
-        Grafico_total_Idade = total_idade()
-        grafico_porcentagem_18 = grafico_porcentagem_18()
+        SegundaPagina = total_idade()
+        SegundaPagina = grafico_porcentagem_18()
     #direitos violados por genero
     elif evento == 'GraficoDireitosgenero':
-        Grafico_total_Genero = total_genero()
-  
-
-    #Quando quiser enviar formulario
-    if evento == 'Limpar':
-        Limpar_janela()
-    #envio de formulario para o banco de dados
-    if evento == 'Enviar':
-        df = df.append(Dados, ignore_index=True)
-        df.to_excel(Excel_file, index=False)
-        sg.popup('Usuário salvo do Banco de dados!')
-        Limpar_janela()
+        SegundaPagina = total_genero()

@@ -49,5 +49,6 @@ def grafico_geral():
     plt.plot(x7, y5, color='orange', marker='o')
     plt.xlabel('True')
     plt.ylabel('False')
+    plt.legend()
 
     plt.show()
